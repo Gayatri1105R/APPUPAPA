@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Love Letter</title>
+<style>
+body, html {
+    margin: 0; padding: 0; height: 100%; width: 100%;
+    display: flex; justify-content: center; align-items: center; flex-direction: column;
+    font-family: 'Comic Sans MS', cursive;
+    overflow: hidden; position: relative;
+    background: linear-gradient(270deg, #f8e1f4, #d7f0fa, #ffe4e1, #e0ffff);
+    background-size: 800% 800%; animation: gradientBG 20s ease infinite;
+}
+@keyframes gradientBG {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+canvas {
+    position: absolute; top: 0; left: 0; z-index: 0;
+}
+#letter {
+    position: relative;
+    width: 90%; max-width: 600px;
+    height: auto; min-height: 300px;
+    padding: 25px; border-radius: 15px;
+    font-size: 1.3em; color: #000; line-height: 1.6;
+    white-space: pre-wrap; text-align: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.7);
+    overflow: hidden;
+}
+#letter::before {
+    content: "";
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: url('image/lovebg.jpg') center center / cover no-repeat;
+    opacity: 0.25;
+    z-index: -1;
+    border-radius: 15px;
+}
+button {
+    margin-top: 20px; padding: 10px 20px;
+    background: #d63384; color: white; border: none;
+    border-radius: 30px; font-size: 1em;
+    cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    z-index: 1; transition: background 0.3s, transform 0.2s;
+}
+button:hover { background: #c2185b; transform: scale(1.05); }
+</style>
+</head>
+<body>
+
+<canvas id="hearts"></canvas>
+
+<div id="letter"></div>
+
+<button id="nextBtn" style="display:none;" onclick="window.location.href='thankyou.html'">Next: Thank You</button>
+
+<script>
+// Typing Animation
+const letterText = 
+`Dear Bharath,
+
+Thank you for being my peace and my joy.
+
+Every day with you feels like a soft sunrise and a comforting sunset.
+
+Your smile lights up even my dull days, and your words give me strength.
+
+Thank you for understanding me, supporting me, and making me feel valued.
+
+I am truly grateful to have you in my life, and I wish to create many beautiful memories together.
+
+Forever your supporter and best friend,
+
+- Yours.`;
+let i = 0;
+const speed = 40;
+const letterDiv = document.getElementById('letter');
+const nextBtn = document.getElementById('nextBtn');
+
+function typeWriter() {
+    if (i < letterText.length) {
+        letterDiv.textContent += letterText.charAt(i);
+        i++;
+        setTimeout(typeWriter, speed);
+    } else {
+        nextBtn.style.display = "inline-block";
+    }
+}
+typeWriter();
+
+// Floating hearts
+const canvas = document.getElementById('hearts');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+let hearts = [];
+
+function Heart() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 20 + 10;
+    this.speedY = Math.random() * 0.5 + 0.5;
+    this.opacity = Math.random() * 0.5 + 0.3;
+    this.color = ["#ff69b4", "#ff1493", "#ff6ec7", "#ffb6c1"][Math.floor(Math.random() * 4)];
+}
+Heart.prototype.draw = function() {
+    ctx.globalAlpha = this.opacity;
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.moveTo(this.x, this.y);
+    ctx.bezierCurveTo(this.x + this.size / 2, this.y - this.size / 2, this.x + this.size, this.y + this.size / 3, this.x, this.y + this.size);
+    ctx.bezierCurveTo(this.x - this.size, this.y + this.size / 3, this.x - this.size / 2, this.y - this.size / 2, this.x, this.y);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+}
+Heart.prototype.update = function() {
+    this.y += this.speedY;
+    if (this.y > canvas.height) {
+        this.y = -this.size;
+        this.x = Math.random() * canvas.width;
+    }
+    this.draw();
+}
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (hearts.length < 30) hearts.push(new Heart());
+    hearts.forEach(h => h.update());
+    requestAnimationFrame(animate);
+}
+animate();
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+</script>
+
+</body>
+</html>
