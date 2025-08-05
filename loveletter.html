@@ -24,22 +24,16 @@ canvas {
 #letter {
     position: relative;
     width: 90%; max-width: 600px;
-    height: auto; min-height: 300px;
-    padding: 25px; border-radius: 15px;
+    height: 400px; /* fixed height with scroll */
+    padding: 25px;
+    border-radius: 15px;
     font-size: 1.3em; color: #000; line-height: 1.6;
-    white-space: pre-wrap; text-align: center;
+    text-align: center;
     box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     z-index: 1;
     background: rgba(255, 255, 255, 0.7);
-    overflow: hidden;
-}
-#letter::before {
-    content: "";
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    background: url('image/lovebg.jpg') center center / cover no-repeat;
-    opacity: 0.25;
-    z-index: -1;
-    border-radius: 15px;
+    overflow-y: auto;
+    white-space: pre-wrap;
 }
 button {
     margin-top: 20px; padding: 10px 20px;
@@ -54,37 +48,70 @@ button:hover { background: #c2185b; transform: scale(1.05); }
 <body>
 
 <canvas id="hearts"></canvas>
-
 <div id="letter"></div>
-
 <button id="nextBtn" style="display:none;" onclick="window.location.href='thankyou.html'">Next: Thank You</button>
 
 <script>
-// Typing Animation
-const letterText = 
-`Dear Bharath,
+function escapeHTML(str) {
+    return str.replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;")
+              .replace(/\n/g, "<br>");
+}
 
-Thank you for being my peace and my joy.
+const letterText = `Dear Appu 💌,
 
-Every day with you feels like a soft sunrise and a comforting sunset.
+Namma first meet 11th standard la dhaan... andha time la dhaa una enaku romba pidichadhu — like love at first sight 💘 Avalo azhaga irundha nee…!
 
-Your smile lights up even my dull days, and your words give me strength.
+Nee OD edutha days la naan romba miss panninen 😢… appo dhaan therinjudhu — nee karate competition la participate panra nu 🥋. Proud-aana moment, aana una romba miss panuven.
 
-Thank you for understanding me, supporting me, and making me feel valued.
+Classroom la sight adichu adichu, adhu dhaan namma daily cute routine aayiduchu 😅💞
+Naan unna “Appu” nu koopiduvén…
+Neeyum enna “Papa” nu koopiduvé 💑
+Andha feel... butterflies laam heart la dance pannum 😍🦋
 
-I am truly grateful to have you in my life, and I wish to create many beautiful memories together.
+nee kudutha heart ring enakku life-la marakka mudiyadha gift 💍✨
+Adhu mattum illa… namma school last public exam — physics paper opening ku rendu perum witness-a sign pannom 📝❤️
+It’s like fate itself was writing namma story.
 
-Forever your supporter and best friend,
+School mudincha apram, different college ponalum… daily call la pesama irundha day illa ☎️💗
+Aana oru long break apram silence…
+But January 27, 2025 la andha oru meet… adhu life-changing 😭💫
+From that moment — namma real love story aarambichu ❤️
 
-- Yours.`;
+Namma Photo Memories pathi sollanum na Ovoru photo vum, ovvoru heartbeat-a irukku.Ithu ellam en life book la golden pages maari 💫📖
+
+Unna pathi yosikama irukka mudiyala…
+Un kural, un sirippu, unoda kai pidichii nadandhaa andha feel…💗
+Naan unna “Appu” nu koopidradhu… nee ennai “Papa” nu koopidradhu… idhu simple illa — soul connection 🤍
+
+Un mele irukura anbu, naan kodukkura care, enoda kaadhal — ellam unakku life-long promise 💍
+
+Ippo nee indha letter padikumbodhu,
+Neeum feel panra nu theriyudhu…
+This is not just a letter… idhu en heart oda voice.
+
+Final-a sollanumna…
+
+Unna vida lucky yaarum illa — un kooda life long irukanum idhaaa enoda biggest dream, asaa, biggest gift 🎁
+Namma story full-a pain, love, strength, comeback… oru real kadhal movie 🍿🎬
+And still… To be continued… 💞
+
+"una sikiram marriage panikanum asa patta mari vazhalanum namba two cute kidoos oda jly ha erukanum That's my biggest wish in my life"
+"WAITING FOR THIS MOMENT"
+
+With all my heart, always yours…
+Un Papa 💝`;
+
 let i = 0;
-const speed = 40;
+const speed = 35;
 const letterDiv = document.getElementById('letter');
 const nextBtn = document.getElementById('nextBtn');
 
 function typeWriter() {
-    if (i < letterText.length) {
-        letterDiv.textContent += letterText.charAt(i);
+    if (i <= letterText.length) {
+        const currentText = escapeHTML(letterText.substring(0, i));
+        letterDiv.innerHTML = currentText;
         i++;
         setTimeout(typeWriter, speed);
     } else {
@@ -141,3 +168,4 @@ window.addEventListener('resize', () => {
 
 </body>
 </html>
+
